@@ -27,11 +27,12 @@ baseurl: ""
 url: "https://mrc0mmand.github.io"
 
 # Build settings
-theme: jekyll-whiteglass
+remote_theme: yous/whiteglass
 plugins:
   - jekyll-archives
   - jekyll-feed
   - jekyll-paginate
+  - jekyll-remote-theme
   - jekyll-sitemap
 
 permalink: /:year/:month/:day/:title/
