@@ -19,30 +19,36 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Random Thoughts
-description: >- # this means to ignore newlines until "baseurl:"
+author: Frantisek Sumsal
+description: >-
   A collection of post on topics I came across while breaking other people's
   stuff.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://mrc0mmand.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-
-author:
-  name: Frantisek Sumsal
-  url: https://sumsal.cz
-  email: frantisek@sumsal.cz
+baseurl: ""
+url: "https://mrc0mmand.github.io"
 
 # Build settings
-remote_theme: mrc0mmand/tale
+theme: jekyll-whiteglass
 plugins:
+  - jekyll-archives
   - jekyll-feed
   - jekyll-paginate
-  - jekyll-remote-theme
-  - jekyll-seo-tag
+  - jekyll-sitemap
 
-permalink: /:year-:month-:day/:title
+permalink: /:year/:month/:day/:title/
 paginate: 5
 markdown: kramdown
+excerpt_separator: "<!-- more -->"
 include:
   - _pages
+
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: category_archives
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
 
 # Exclude from processing.
 # The following items will not be processed, by default.
