@@ -20,27 +20,23 @@
 
 title: Random Thoughts
 author: Frantisek Sumsal
-description: >-
-  A collection of post on topics I came across while breaking other people's
-  stuff.
+description: A collection of post on topics I came across while breaking other people's stuff
 baseurl: ""
-url: "https://mrc0mmand.github.io"
+url: "https://blog.sumsal.cz"
 
 # Build settings
-remote_theme: yous/whiteglass
+theme: jekyll-whiteglass
 plugins:
   - jekyll-archives
-  - jekyll-feed
   - jekyll-paginate
-  - jekyll-remote-theme
   - jekyll-sitemap
 
 permalink: /:year/:month/:day/:title/
+paginate_path: /posts/:num/
 paginate: 5
+
 markdown: kramdown
 excerpt_separator: "<!-- more -->"
-include:
-  - _pages
 
 jekyll-archives:
   enabled:
@@ -66,7 +62,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules/
-  - ruby-env
   - vendor/bundle/
   - vendor/cache/
   - vendor/gems/
