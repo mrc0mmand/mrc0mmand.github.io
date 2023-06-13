@@ -56,12 +56,14 @@ jekyll-archives:
 # their entries' file path in the `include:` list.
 #
 exclude:
-  - .sass-cache/
   - .jekyll-cache/
-  - gemfiles/
+  - .sass-cache/
+  - CNAME
   - Gemfile
   - Gemfile.lock
+  - gemfiles/
   - node_modules/
+  - ruby-env
   - vendor/bundle/
   - vendor/cache/
   - vendor/gems/
