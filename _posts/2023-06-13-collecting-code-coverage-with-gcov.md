@@ -170,7 +170,7 @@ you begin with the actual testing:
 So, you've got everything set up, built correctly, coverage collection went smooth as well, but after checking the
 reports you notice that lines that definitely should have been covered by tests are still glowing red. There's actually
 quite a number of reasons why the coverage might be missing, some of them are quite obvious with a helpful error
-message, and some of them are silent and *slightly* frustrating to figure out. Let's start with the more obvious ones.
+message, and some of them are silent and *slightly* frustrating to figure out. Let's start with the most obvious one.
 
 ### Inaccessible build directory
 
