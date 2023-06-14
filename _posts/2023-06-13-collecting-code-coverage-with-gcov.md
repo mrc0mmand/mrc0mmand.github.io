@@ -13,12 +13,12 @@ them plagued with nasty issues, which further emphasizes the usefulness of such 
 
 ## Building with gcov
 
-Doing a coverage-aware build is usually pretty straightforward, as it's a matter of adding the `--coverage` compile and
+Doing a coverage-aware build is usually pretty straightforward, as it is a matter of adding the `--coverage` compile and
 link option to your build process (i.e. to `$CFLAGS` and `$LDFLAGS`) - `--coverage` expands to `-fprofile-arcs
 -ftest-coverage` when compiling and to `-lgcov` when linking the code. Also, even though `gcov` was originally a
 GCC-only thing, clang nowadays ships a GCC-compatible implementation as well, so you're not limited to GCC.
 
-If you use one of the available build systems enabling coverage might be as simple as flipping a switch - for example
+If you use one of the available build systems, enabling coverage might be as simple as flipping a switch - for example
 with [meson](https://mesonbuild.com/) all you need to do is to add `-Db_coverage=true` to the `meson setup` call and
 meson handles everything behind the scenes automagically.
 
@@ -174,14 +174,14 @@ message, and some of them are silent and *slightly* frustrating to figure out. L
 
 ### Inaccessible build directory
 
-`gcov` requires both read and write access to the build directory, where it reads the notes files (`*.gcno`) and also
-writes the coverage counters (`*.gcda`), so having correct permissions through the whole build directory is crucial. For
-unit tests this is usually trivial, but some more involved tests, like integration tests that make use of multiple
+`gcov` requires both read and write access to the build directory, where it reads the notes files (`.gcno`) and also
+writes the coverage counters (`.gcda`), so having correct permissions throughout the whole build directory is crucial.
+For unit tests this is usually trivial, but some more involved tests, like integration tests that make use of multiple
 users, might not be happy. If you're lucky and the `stderr` from the test doesn't end up in `/dev/null` you might notice
 `gcov` complaining:
 
 ```
-profiling:/home/fsumsal/tmp/cov-test/build/cov_test.p/cov_test.c.gcda:Cannot
+profiling: /home/fsumsal/tmp/cov-test/build/cov_test.p/cov_test.c.gcda: cannot open: Permission denied
 ```
 
 The solution might be as easy as `chmod/chown`-ing the build directory with the correct mode/user, or making use of
@@ -288,8 +288,8 @@ Here I used `execveat()` and `execvpe()` as an example, since I had to deal with
 adventures, but the same applies to any other syscall that is missing a gcov wrapper.
 
 In the end, the more complex the project is the more likely it is that you'll hit a test case that's incompatible with
-collecting coverage, and is completely up to you how much time, additional code, and sanity you're willing to sacrifice
-to make the coverage reports as accurate as possible.
+collecting coverage, and it is completely up to you how much time, additional code, and sanity you're willing to
+sacrifice to make the coverage reports as accurate as possible.
 
 ## What's next?
 
