@@ -194,10 +194,6 @@ You may find yourself in a situation when you'll need to do both, since even tho
 A whole another chapter are containers, if your tests utilize them, in which case you have to mount the build dir with
 appropriate permissions into the container in the first place and then account for any sandboxing that may take effect.
 
-In the end, the more complex the project is the more likely it is that you'll hit a test case that's incompatible with
-collecting coverage, and is completely up to you how much time, additional code, and sanity you're willing to sacrifice
-to make the coverage reports as accurate as possible.
-
 ### Using `_exit()`
 
 In some situations the code might use `_exit()` instead of the regular `exit()` - this is usually the case in forked off
@@ -271,6 +267,10 @@ static inline int _coverage_execvpe(
 
 Here I used `execveat()` and `execvpe()` as an example, since I had to deal with these two syscalls in my systemd
 adventures, but the same applies to any other syscall that is missing a gcov wrapper.
+
+In the end, the more complex the project is the more likely it is that you'll hit a test case that's incompatible with
+collecting coverage, and is completely up to you how much time, additional code, and sanity you're willing to sacrifice
+to make the coverage reports as accurate as possible.
 
 ## What's next?
 
