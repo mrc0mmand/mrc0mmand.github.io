@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Collecting coverage with gcov"
+title:  "Collecting code coverage with gcov"
 date:   2023-06-13
 tags:   C coverage gcov systemd
 ---
