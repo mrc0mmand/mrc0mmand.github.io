@@ -181,14 +181,14 @@ users, might not be happy. If you're lucky and the `stderr` from the test doesn'
 `gcov` complaining:
 
 ```
-profiling: /home/fsumsal/tmp/cov-test/build/cov_test.p/cov_test.c.gcda: cannot open: Permission denied
+profiling: /home/fsumsal/.../build/cov_test.p/cov_test.c.gcda: cannot open: Permission denied
 ```
 
 The solution might be as easy as `chmod/chown`-ing the build directory with the correct mode/user, or making use of
 POSIX ACLs[^2] to allow anyone to read/write to the build directory:
 
 ```
-$ setfacl --recursive --modify=d:o:rwX --modify=o:rwX
+$ setfacl --recursive --modify=d:o:rwX --modify=o:rwX build
 ```
 
 (good enough for the coverage run, not recommended otherwise). Apart from file permissions, SELinux (or any other LSM)
