@@ -13,12 +13,14 @@ them plagued with nasty issues, which further emphasizes the usefulness of such 
 
 ## Building with gcov
 
-Doing a coverage-aware built is usually pretty straightforward, as it's a matter of adding the `--coverage` compile and
+Doing a coverage-aware build is usually pretty straightforward, as it's a matter of adding the `--coverage` compile and
 link option to your build process (i.e. to `$CFLAGS` and `$LDFLAGS`) - `--coverage` expands to `-fprofile-arcs
--ftest-coverage` when compiling and to `-lgcov` when linking the code. If you use one of the available build systems
-enabling coverage might be as simple as flipping a switch - for example with [meson](https://mesonbuild.com/) all you
-need to do is to add `-Db_coverage=true` to the `meson setup` call and meson handles everything behind the scenes
-automagically.
+-ftest-coverage` when compiling and to `-lgcov` when linking the code. Also, even though `gcov` was originally a
+GCC-only thing, clang nowadays ships a GCC-compatible implementation as well, so you're not limited to GCC.
+
+If you use one of the available build systems enabling coverage might be as simple as flipping a switch - for example
+with [meson](https://mesonbuild.com/) all you need to do is to add `-Db_coverage=true` to the `meson setup` call and
+meson handles everything behind the scenes automagically.
 
 After building the project with the necessary options, you should end up with a bunch of `.gcno` files alongside the
 object files[^1], for example:
@@ -145,6 +147,23 @@ Overall coverage rate:
 
 $ firefox coverage_html/index.html
 ```
+
+## Potential issues
+
+There's a couple of potential issues that might not be completely obvious from the start, but may bite you later when
+you begin with the actual testing:
+
+- All the extra counting of line hits takes a toll on the performance, which in some cases might cause timeouts
+  throughout your test suite - you'll need to account for that.
+
+- The extra code to make the coverage work + the `.gcno` and `.gcda` files take additional space, so you need to adjust
+  the size of test images if that's relevant for your project (for example, in case of systemd only the `.gcno` files
+  take additional ~100 MiB of space).
+
+- You need to carry the build directory hierarchy[^1] with the `.gcno` files to the testbed/SUT (if you don't run the
+  tests locally), otherwise gcov won't be able to generate the coverage. You really only need the `.gcno` files (but
+  with the original directory layout intact), other files from the build directory can be left behind. More on the build
+  directory shenanigans below.
 
 ## Where is my coverage?
 
@@ -292,9 +311,10 @@ Coverall's [Universal Coverage Reporter](https://github.com/coverallsapp/coverag
 supports the output from the `lcov` commands above.
 
 [^1]: Assuming you didn't use `-fprofile-dir=path` to store the notes files elsewhere
-[^2]: acl(5)
+[^2]: acl(5), setfacl(1)
 [^3]: [systemd.exec(5), section *Sandboxing*](https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Sandboxing)
 [^4]: [libgcc/libgcov-interface.c](https://gcc.gnu.org/git/?p=gcc.git;a=blob;f=libgcc/libgcov-interface.c;h=b2ee930864183b78c8826255183ca86e15e21ded;hb=HEAD#l196)
 [^5]: [https://coveralls.io/github/systemd/systemd](https://coveralls.io/github/systemd/systemd)
 
 *[LSM]: Linux Security Modules
+*[SUT]: System under test
