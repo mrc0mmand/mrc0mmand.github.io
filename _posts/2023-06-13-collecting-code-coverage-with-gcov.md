@@ -181,7 +181,7 @@ users, might not be happy. If you're lucky and the `stderr` from the test doesn'
 `gcov` complaining:
 
 ```
-profiling: /home/fsumsal/.../build/cov_test.p/cov_test.c.gcda: cannot open: Permission denied
+profiling: /.../build/cov_test.p/cov_test.c.gcda: cannot open: Permission denied
 ```
 
 The solution might be as easy as `chmod/chown`-ing the build directory with the correct mode/user, or making use of
