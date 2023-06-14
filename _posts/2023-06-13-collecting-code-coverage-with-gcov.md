@@ -213,6 +213,14 @@ You may find yourself in a situation when you'll need to do both, since even tho
 A whole another chapter are containers, if your tests utilize them, in which case you have to mount the build dir with
 appropriate permissions into the container in the first place and then account for any sandboxing that may take effect.
 
+And to add one head-scratcher from my systemd-adventures, which took a me bit to figure out: our `systemd-homed` test
+temporarily overmounts `/home` with a temporary file system, as it, as the name suggests, tests home directories.  This,
+however, happens after we copy the build directory into the testbed. So, if your original build directory happens to be
+under `/home` (which is usually the case), it'll disappear for the duration of the test, which makes `gcov` complain
+about missing `.gcno` files. However, if you check the file system before and after the test, the files are there, as
+`/home` is overmounted only for the duration of the test. This is, of course, a weird corner case, but software testing
+is full of such weird corner cases.
+
 ### Using `_exit()`
 
 In some situations the code might use `_exit()` instead of the regular `exit()` - this is usually the case in forked off
