@@ -25,18 +25,16 @@ meson handles everything behind the scenes automagically.
 After building the project with the necessary options, you should end up with a bunch of `.gcno` files alongside the
 object files[^1], for example:
 
-```
+```bash
 $ ls
 bar.c  cov_test.c  foo.c  meson.build  shared.h
 $ meson setup build -Db_coverage=true
 ...
 lcov: LCOV version 1.14
 genhtml: LCOV version 1.14
-
 $ ninja -C build
 ...
-
-$ find build -name "*.o" -o -name "*.gcno" | sort
+$ find build -name "*.o" -o -name "*.gcno"
 build/bar.p/bar.c.gcno
 build/bar.p/bar.c.o
 build/cov_test.p/bar.c.gcno
@@ -54,7 +52,7 @@ basic block graphs and to assign source line numbers to blocks.
 After running tests with the coverage-aware build, some of the `.gcno` files should now be accompanied by newly created
 `.gcda` files - these *data* files contain the actual coverage information:
 
-```
+```bash
 $ find build -name "*.gcno" -o -name "*.gcda"
 build/cov_test.p/cov_test.c.gcno
 build/cov_test.p/foo.c.gcno
@@ -79,7 +77,7 @@ some coverage, i.e. hide the exact thing we're trying to uncover.
 Using the code from previous examples, where only code from `cov_test.c` is run, files `foo.c` and `bar.c` are
 completely uncovered, and `bar.c` is a completely separate build unit, we'll get the following:
 
-```
+```bash
 $ lcov --capture --directory build --output-file coverage.info
 Capturing coverage data from build
 Found gcov version: 12.2.1
@@ -105,7 +103,7 @@ foo.c          | 0.0%      3| 0.0%     1|    -      0
 Notice that `bar.c` is missing completely from the report. Now let's do the same thing, but do an initial capture as
 well, and then merge both captures into a final one:
 
-```
+```bash
 $ lcov --initial --capture --directory build --output-file base.info
 ...
 $ lcov --capture --directory build --output-file coverage.info
@@ -130,7 +128,7 @@ Now the report contains all files from our project as expected.
 To get more detail on what's covered and what's not, you can use the genhtml(1) utility to generate an HTML report
 for the whole source tree:
 
-```
+```bash
 $ genhtml --show-details --output-directory coverage_html coverage-final.info
 Reading data file coverage-final.info
 Found 3 entries.
