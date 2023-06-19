@@ -327,7 +327,7 @@ main  main.c  main.gcno
 However, if you run it, and then kill it with `SIGTERM` from another terminal, you'll notice that there are no newly
 generated `.gcda` files:
 
-```
+```bash
 $ ./main
 Hello world
 ## Run `pkill -f ./main` from a different terminal
@@ -339,7 +339,7 @@ main  main.c  main.gcno
 This can be easily remedied by handling `SIGTERM`. It doesn't have to be anything fancy, the signal handler can even be
 empty, for example:
 
-```
+```c
 #include <assert.h>
 #include <stdio.h>
 #include <signal.h>
@@ -368,7 +368,7 @@ int main(int argc, char *argv[])
 Now, if we build it, run it, and kill it with `SIGTERM` again, we should see an immediate difference in the generated
 files:
 
-```
+```bash
 $ ./main
 Hello world
 ## Run `pkill -f ./main` from a different terminal
