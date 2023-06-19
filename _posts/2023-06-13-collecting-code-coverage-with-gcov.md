@@ -297,7 +297,8 @@ adventures, but the same applies to any other syscall that is missing a gcov wra
 
 If your application is long running and/or you stop it using a signal, be it explicitly (manually) or implicitly (if it
 runs in a systemd unit and you issue `systemctl stop`), make sure you handle at least `SIGTERM`. Otherwise you might
-find yourself wondering why there is a gaping hole in your coverage even after all tests run successfully.
+find yourself wondering why there is a gaping hole in your coverage even after all tests run successfully, as your
+program will get terminated without having a chance to do any cleanup and, more importantly, run the coverage hooks.
 
 Let's take this simple example program, that prints `Hello world` and then waits for a signal:
 
