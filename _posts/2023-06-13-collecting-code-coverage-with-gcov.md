@@ -293,6 +293,90 @@ static inline int _coverage_execvpe(
 Here I used `execveat()` and `execvpe()` as an example, since I had to deal with these two syscalls in my systemd
 adventures, but the same applies to any other syscall that is missing a gcov wrapper.
 
+### Unhandled signals
+
+If your application is long running and/or you stop it using a signal, be it explicitly (manually) or implicitly (if it
+runs in a systemd unit and you issue `systemctl stop`), make sure you handle at least `SIGTERM`. Otherwise you might
+find yourself wondering why there is a gaping hole in your coverage even after all tests run successfully.
+
+Let's take this simple example program, that prints `Hello world` and then waits for a signal:
+
+```c
+#include <assert.h>
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[])
+{
+    puts("Hello world");
+    pause();
+
+    return 0;
+}
+```
+
+After building it, we get the expected `.gcno` file:
+
+```bash
+$ gcc --coverage -o main main.c
+$ ls
+main  main.c  main.gcno
+```
+
+However, if you run it, and then kill it with `SIGTERM` from another terminal, you'll notice that there are no newly
+generated `.gcda` files:
+
+```
+$ ./main
+Hello world
+## Run `pkill -f ./main` from a different terminal
+Terminated
+$ ls
+main  main.c  main.gcno
+```
+
+This can be easily remedied by handling `SIGTERM`. It doesn't have to be anything fancy, the signal handler can even be
+empty, for example:
+
+```
+#include <assert.h>
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+void noop_signal_handler(int) {
+    /* Nothing here */
+}
+
+int main(int argc, char *argv[])
+{
+    static const struct sigaction sigterm = {
+        .sa_handler = noop_signal_handler,
+        .sa_flags = SA_RESTART,
+    };
+
+    assert(sigaction(SIGTERM, &sigterm, NULL) >= 0);
+
+    puts("Hello world");
+    pause();
+
+    return 0;
+}
+```
+
+Now, if we build it, run it, and kill it with `SIGTERM` again, we should see an immediate difference in the generated
+files:
+
+```
+$ ./main
+Hello world
+## Run `pkill -f ./main` from a different terminal
+$ ls
+main  main.c  main.gcda  main.gcno
+```
+
+
 In the end, the more complex the project is the more likely it is that you'll hit a test case that's incompatible with
 collecting coverage, and it is completely up to you how much time, additional code, and sanity you're willing to
 sacrifice to make the coverage reports as accurate as possible.
