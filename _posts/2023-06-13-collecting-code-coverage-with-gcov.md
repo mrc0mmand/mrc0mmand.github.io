@@ -323,8 +323,7 @@ $ ls
 main  main.c  main.gcno
 ```
 
-However, if you run it, and then kill it with `SIGTERM` from another terminal, you'll notice that there are no newly
-generated `.gcda` files:
+However, if we run it and then kill it with `SIGTERM` from another terminal, no `.gcda` files will get generated:
 
 ```bash
 $ ./main
