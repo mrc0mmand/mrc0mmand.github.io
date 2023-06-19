@@ -307,8 +307,7 @@ Let's take this simple example program, that prints `Hello world` and then waits
 #include <signal.h>
 #include <unistd.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     puts("Hello world");
     pause();
 
@@ -349,8 +348,7 @@ void noop_signal_handler(int) {
     /* Nothing here */
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     static const struct sigaction sigterm = {
         .sa_handler = noop_signal_handler,
         .sa_flags = SA_RESTART,
